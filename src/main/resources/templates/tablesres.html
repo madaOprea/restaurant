@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant: Table Reservations</title>
+</head>
+<body>
+<h1>Welcome to the Reservations Page</h1>
+<table>
+    <tr>
+        <td>Table</td>
+        <td>Table Number</td>
+        <td>Client</td>
+    </tr>
+    <tr th:each="tableReservation: ${tableReservations}">
+        <td th:text="${tableReservation.tableName}">Table Name</td>
+        <td th:text="${tableReservation.tableNumber}">Table Number</td>
+        <td th:text="${tableReservation.lastName}!=null? ${tableReservation.lastName} + ', ' +
+        ${tableReservation.firstName}: 'VACANT'">Client</td>
+    </tr>
+</table>
+
+</body>
+</html>

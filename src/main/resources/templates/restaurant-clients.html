@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant</title>
+</head>
+<body>
+<h1>Welcome to the Clients Page</h1>
+<table>
+    <tr>
+        <td>Last Name</td>
+        <td>First Name</td>
+        <td>Email Address</td>
+        <td>Phone Number</td>
+    </tr>
+    <tr th:each="client: ${clients}">
+        <td th:text="${client.lastName}">LastName</td>
+        <td th:text="${client.firstName}">FirstName</td>
+        <td th:text="${client.emailAddress}">EmailAddress</td>
+        <td th:text="${client.phoneNumber}">PhoneNumber</td>
+    </tr>
+</table>
+</body>
+</html>
+
