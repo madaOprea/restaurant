@@ -1,16 +1,16 @@
 package com.app.restaurant.data;
 
+import jakarta.annotation.Nullable;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.persistence.Table;
-import java.sql.Date;
+import java.util.Date;
 
 @AllArgsConstructor
 @Builder
 @Data
 @Entity
-@javax.persistence.Table(name="Reservations")
+@javax.persistence.Table(name="reservation")
 @NoArgsConstructor
 public class Reservation {
 
@@ -23,8 +23,12 @@ public class Reservation {
     private long tableId;
 
     @Column(name="client_id")
+    @Nullable
     private long clientId;
 
     @Column(name="res_date")
     private Date reservationDate;
+
+    @Column(name="res_name")
+    private String reservationName;
 }

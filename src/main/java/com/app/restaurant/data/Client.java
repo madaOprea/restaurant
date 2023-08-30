@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Data
-@javax.persistence.Table(name="Clients")
+@javax.persistence.Table(name="client")
 public class Client {
 
     @Id

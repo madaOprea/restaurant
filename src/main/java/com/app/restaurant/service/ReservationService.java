@@ -1,60 +1,66 @@
 package com.app.restaurant.service;
 
-import java.util.*;
-
-import com.app.restaurant.data.*;
+import com.app.restaurant.data.Client;
+import com.app.restaurant.data.Reservation;
+import com.app.restaurant.data.RestaurantTable;
+import com.app.restaurant.repository.ClientRepository;
+import com.app.restaurant.repository.ReservationRepository;
+import com.app.restaurant.repository.RestaurantTableRepository;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
 
 @AutoConfiguration
 @Service
 public class ReservationService {
 
-    private final TableRepository tablesRepository;
+    private final RestaurantTableRepository tablesRepository;
     private final ClientRepository clientsRepository;
     private final ReservationRepository reservationsRepository;
 
-    public ReservationService(TableRepository tablesRepository, ClientRepository clientsRepository, ReservationRepository reservationsRepository) {
+    public ReservationService(RestaurantTableRepository tablesRepository, ClientRepository clientsRepository, ReservationRepository reservationsRepository) {
         this.tablesRepository = tablesRepository;
         this.clientsRepository = clientsRepository;
         this.reservationsRepository = reservationsRepository;
     }
 
-    public List<TableReservation> getTableReservationsForDate(Date date) {
-        Iterable<Table> tables = this.tablesRepository.findAll();
-        Map<Long, TableReservation> tableReservationMap = new HashMap();
+    public List<Reservation> getTableReservationsForDate(Date date) {
+        Random random = new Random();
+        long randomLong = random.nextLong();
+
+        List<Reservation> tables = this.reservationsRepository.findAll();
+        Map<Long, Reservation> tableReservationMap = new HashMap();
         tables.forEach(table -> {
-            TableReservation tableReservation = TableReservation.builder()
-                    .tableId(table.getId())
-                    .tableName(table.getName())
-                    .tableNumber(table.getTableNumber())
-                    .clientId(0)
-                    .build();
-            tableReservationMap.put(table.getId(), tableReservation);
+            Reservation newReservation = new Reservation();
+            newReservation.setTableId(table.getTableId());
+            newReservation.setReservationDate(date);
+            newReservation.setReservationId(randomLong);
+            tableReservationMap.put(table.getTableId(), newReservation);
         });
 
         Iterable<Reservation> reservations = this.reservationsRepository.findReservationByReservationDate(new java.sql.Date(date.getTime()));
         reservations.forEach(reservation -> {
-            TableReservation reservation1 = tableReservationMap.get(reservation.getTableId());
-            reservation1.setDate(date);
+            Reservation reservation1 = tableReservationMap.get(reservation.getTableId());
+            reservation1.setReservationDate(date);
             Client client = this.clientsRepository.findById(reservation.getClientId()).get();
             client.setFirstName(client.getFirstName());
             client.setLastName(client.getLastName());
             client.setClientId(client.getClientId());
         });
 
-        List<TableReservation> tablesReservations = new ArrayList<>();
+        List<Reservation> tablesReservations = new ArrayList<>();
         for (Long id : tableReservationMap.keySet()) {
             tablesReservations.add(tableReservationMap.get(id));
         }
 
-        tablesReservations.sort(new Comparator<TableReservation>() {
+        tablesReservations.sort(new Comparator<Reservation>() {
             @Override
-            public int compare(TableReservation o1, TableReservation o2) {
-                if (o1.getTableName().equals(o2.getTableName())) {
-                    return o1.getTableNumber().compareTo(o2.getTableNumber());
+            public int compare(Reservation o1, Reservation o2) {
+                if (o1.getReservationDate().equals(o2.getReservationDate())) {
+                    return o1.getReservationDate().compareTo(o2.getReservationDate());
                 }
-                return o1.getTableName().compareTo(o2.getTableName());
+                return o1.getReservationName().compareTo(o2.getReservationName());
             }
         });
 
@@ -84,13 +90,13 @@ public class ReservationService {
         this.clientsRepository.save(client);
     }
 
-    public List<Table> getTables() {
-        Iterable<Table> tables = this.tablesRepository.findAll();
-        List<Table> tablesList = new ArrayList<>();
+    public List<RestaurantTable> getTables() {
+        Iterable<RestaurantTable> tables = this.tablesRepository.findAll();
+        List<RestaurantTable> tablesList = new ArrayList<>();
         tables.forEach(room->{tablesList.add(room);});
-        tablesList.sort(new Comparator<Table>() {
+        tablesList.sort(new Comparator<RestaurantTable>() {
             @Override
-            public int compare(Table o1, Table o2) {
+            public int compare(RestaurantTable o1, RestaurantTable o2) {
                 return o1.getTableNumber().compareTo(o2.getTableNumber());
             }
         });

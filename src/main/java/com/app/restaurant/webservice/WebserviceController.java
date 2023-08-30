@@ -1,15 +1,17 @@
 package com.app.restaurant.webservice;
 
-import java.util.*;
-
-import com.app.restaurant.service.*;
-import com.app.restaurant.data.*;
-import com.app.restaurant.data.Table;
-import com.app.restaurant.util.*;
-import lombok.*;
+import com.app.restaurant.data.Client;
+import com.app.restaurant.data.Reservation;
+import com.app.restaurant.data.RestaurantTable;
+import com.app.restaurant.service.ReservationService;
+import com.app.restaurant.util.DateUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -22,7 +24,7 @@ public class WebserviceController {
     private final ReservationService reservationService;
 
     @RequestMapping(path="/reservations", method = GET)
-    public List<TableReservation> getReservations(@RequestParam(value="date", required = false) String dateString){
+    public List<Reservation> getReservations(@RequestParam(value="date", required = false) String dateString){
         Date date = this.dateUtils.createDateFromDateString(dateString);
         return this.reservationService.getTableReservationsForDate(date);
     }
@@ -39,7 +41,7 @@ public class WebserviceController {
     }
 
     @GetMapping("/tables")
-    public List<Table> getTables(){
+    public List<RestaurantTable> getTables(){
         return this.reservationService.getTables();
     }
 }

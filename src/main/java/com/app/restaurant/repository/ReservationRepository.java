@@ -1,9 +1,10 @@
-package com.app.restaurant.data;
+package com.app.restaurant.repository;
 
-import java.sql.Date;
-
+import com.app.restaurant.data.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Date;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {

@@ -8,9 +8,9 @@ import javax.persistence.*;
 @Builder
 @Data
 @Entity
-@javax.persistence.Table(name="Boards")
+@javax.persistence.Table(name="restaurant_tables")
 @NoArgsConstructor
-public class Table {
+public class RestaurantTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,3 +26,4 @@ public class Table {
     @Column(name="chair_info")
     private String chairInfo;
 }
+
